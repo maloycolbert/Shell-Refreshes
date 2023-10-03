@@ -1,25 +1,25 @@
 if [ "${bamboo_planRepository_branch}" == "dev" ]
 then
-	_sync_TARGET_DB="ALLUVION_DEV"
-	_sync_TARGET_USER="ALLUVION_DEV_USER"
-	_sync_TARGET_PASS=${bamboo_alluvion_dev_db_secret}
-	_sync_TARGET_TOKEN=${bamboo_alluvion_dev_token_secret}
-	_sync_TARGET_PROJECT="alluvion-dev"
-	_sync_TARGET_URL="alluvion-dev.okd.liberty.edu"
+	_sync_TARGET_DB="DEV_DATABASE"
+	_sync_TARGET_USER="DEV_USER"
+	_sync_TARGET_PASS=${bamboo_dev_db_secret}
+	_sync_TARGET_TOKEN=${bamboo_dev_token_secret}
+	_sync_TARGET_PROJECT="project-dev"
+	_sync_TARGET_URL="project-dev.okd.liberty.edu"
 fi
 if [ "${bamboo_planRepository_branch}" == "test" ]
 then
-	_sync_TARGET_DB="ALLUVION_TEST"
-	_sync_TARGET_USER="ALLUVION_TEST_USER"
-	_sync_TARGET_PASS=${bamboo_alluvion_test_db_secret}
-	_sync_TARGET_TOKEN=${bamboo_alluvion_test_token_secret}
-	_sync_TARGET_PROJECT="alluvion-test"
-	_sync_TARGET_URL="alluvion-test.okd.liberty.edu"
+	_sync_TARGET_DB="TEST_DATABASE"
+	_sync_TARGET_USER="TEST_USER"
+	_sync_TARGET_PASS=${bamboon_test_db_secret}
+	_sync_TARGET_TOKEN=${bamboo_test_token_secret}
+	_sync_TARGET_PROJECT="project-test"
+	_sync_TARGET_URL="project-test.okd.liberty.edu"
 fi
 
 if [ -z "${_sync_TARGET_DB}" ]
 then
-	throw "Invalid branch. You can currently only sync dev, and test.";
+	throw "Invalid branch. You can currently only sync to dev or test.";
 	exit 1; 
 fi
 
@@ -29,18 +29,18 @@ esc() {
 
 # Set Date
 # read YYYY MM DD <<<$(date +'%Y %m %d')
-_sync_SITE="alluvion"
+_sync_SITE="project"
 
 
 # PROD set to test for now for testing
-_sync_SOURCE_DB='WP_ALLUVION'
-_sync_SOURCE_USER='WP_ALLUVION'
+_sync_SOURCE_DB='PROD_DATABASE'
+_sync_SOURCE_USER='PROD_USER'
 _sync_SOURCE_PASS=${bamboo_alluvion_prod_db_secret} #OKD PROD
-_sync_SOURCE_PROJECT='web-alluvion' #OKD PROD
-_sync_SOURCE_URL='alluvion.okd.liberty.edu'
-_sync_SOURCE_VANITY_URL='www.alluvionstage.com'
+_sync_SOURCE_PROJECT='web-project' #OKD PROD
+_sync_SOURCE_URL='project.okd.liberty.edu'
+_sync_SOURCE_VANITY_URL='www.exampleproject.com'
 
-oc login okd-cluster.liberty.edu --token=${bamboo_alluvion_prod_token_secret} --insecure-skip-tls-verify
+oc login okd-cluster.liberty.edu --token=${bamboo_prod_token_secret} --insecure-skip-tls-verify
 oc project ${_sync_SOURCE_PROJECT}
 setProject=`oc project -q`
 if [ "${setProject}" == "${_sync_SOURCE_PROJECT}" ]
