@@ -1,12 +1,12 @@
 if [ "${bamboo_planRepository_branch}" == "dev" ]
 then
-	_d_DEST_TOKEN=${bamboo_alluvion_dev_token_secret}
-	_d_DEST_PROJECT='alluvion-dev'
+	_d_DEST_TOKEN=${bamboo_dev_token_secret}
+	_d_DEST_PROJECT='project-dev'
 fi
 if [[ "${bamboo_planRepository_branch}" = "test" ]]
 then
-	_d_DEST_TOKEN=${bamboo_alluvion_test_token_secret}
-	_d_DEST_PROJECT='alluvion-test'
+	_d_DEST_TOKEN=${bamboo_test_token_secret}
+	_d_DEST_PROJECT='project-test'
 fi
 
 if [ -z "${_d_DEST_PROJECT}" ]
@@ -15,7 +15,7 @@ then
 	exit 1; 
 fi
 
-_d_SITE='alluvion'
+_d_SITE='project'
 
 # create tmp folders
 echo "Creating tmp folders"
@@ -27,9 +27,9 @@ mkdir ./tmp/site/${_d_SITE}/plugins/
 
 # SOURCE
 # TEST
-_d_SOURCE_PROJECT='web-alluvion'
+_d_SOURCE_PROJECT='web-project'
 echo "Connecting to okd-cluster.liberty.edu - Project: ${_d_SOURCE_PROJECT}"
-oc login okd-cluster.liberty.edu --token=${bamboo_alluvion_prod_token_secret} --insecure-skip-tls-verify
+oc login okd-cluster.liberty.edu --token=${bamboo_prod_token_secret} --insecure-skip-tls-verify
 oc project ${_d_SOURCE_PROJECT}
 setProject=`oc project -q`
 
